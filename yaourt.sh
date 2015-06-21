@@ -26,6 +26,7 @@ install_aur(){
   echo "Finish"
   cd
   rm -r ~/"$1"-tmp-"$num"
+  check_aur "$1"
 }
 
 confirmation() {
@@ -33,14 +34,14 @@ confirmation() {
   read input
   if [[ "$input" != "Y" && "$input" != "y" && "$input" != '' ]]; then
     echo "exiting"
-    cd
-    garbage=$(ls | grep tmp-lorix)
-    if [[ -e $garbage ]]; then
-      echo "Control-C to exit the program without deleting the tmp directory"
-      confirmation "Remove '$garbage'?"
-      rm -r "$garbage"
-      echo "The directory is removed"
-    fi
+    # cd
+    # garbage=$(ls | grep tmp-)
+    # if [[ -e $garbage ]]; then
+    #   echo "Control-C to exit the program without deleting the tmp directory"
+    #   confirmation "Remove '$garbage'?"
+    #   rm -r "$garbage"
+    #   echo "The directory is removed"
+    # fi
     exit 1
   fi
 }
@@ -50,6 +51,7 @@ check_aur() {
     echo "$1 is installed"
     echo
   else
+    echo "$1 is not installed"
     install_aur "$1"
   fi
 }
