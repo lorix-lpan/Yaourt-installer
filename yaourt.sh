@@ -52,8 +52,8 @@ check_aur() {
   fi
 }
 
-echo "* This is an installer for yaourt with dependency resolution"
-echo "* Before you proceed, please check the README file"
+echo "* This is a simple yaourt installation script with dependency resolution"
+echo "* Before you proceed, please read the README file"
 echo 
 
 confirmation "Proceed with yaourt's installation?"
@@ -62,7 +62,6 @@ echo "Resolving dependencies"
 depend=("gettext" "diffutils" "wget" "yajl")
 missing=()
 
-# Checking the dependencies
 for i in ${depend[@]}; do
   if (pacman -Q $i); then
     echo "$i is installed"
