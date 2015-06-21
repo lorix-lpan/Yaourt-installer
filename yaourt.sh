@@ -1,21 +1,24 @@
 #!/bin/bash
 
-install_package_query(){
+install_aur(){
   num=$RANDOM
-  mkdir ~/yaourt-tmp-"$num"
-  cd ~/yaourt-tmp-"$num"
-  wget https://aur.archlinux.org/packages/pa/package-query/package-query.tar.gz
-  if [[ -e package-query.tar.gz ]]; then
-    tar -xvf package-query.tar.gz  
+  mkdir ~/"$1"-tmp-"$num"
+  cd ~/"$1"-tmp-"$num"
+  wget https://aur.archlinux.org/packages/pa/"$1"/"$1".tar.gz 
+  if [[ -e "$1".tar.gz ]]; then
+    tar -xvf "$1".tar.gz  
   else
-    echo "Error: cannot find the package-query.tar.gz. Please check your
+    echo "Error: cannot find the '$1'.tar.gz. Please check your
     internet connection"
     exit 1
   fi
-  cd package-query
+  cd "$1"
   makepkg
   pak=$(ls | grep .xz)
   sudo pacman -U "$pak"
+  echo "Finish"
+  cd
+  rm -r ~/"$1"-tmp-"$num"
 }
 
 
@@ -60,6 +63,6 @@ if (pacman -Q package-query); then
   echo "package-query is installed"
   echo
 else
-  install_package_query
+  install_aur "package-query"
 fi
 
