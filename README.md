@@ -8,6 +8,6 @@ A simple script written in bash with automatic dependency resolution. This scrip
 GNU GENERAL PUBLIC LICENSE Version 2
 
 #Usage
-git clone http://www.github.com/lorix-lpan/yaourt-installer
-cd yaourt-installer
-bash yaourt.sh
+* $ git clone http://www.github.com/lorix-lpan/yaourt-installer
+* $ cd yaourt-installer
+* $ bash yaourt.sh
