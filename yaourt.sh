@@ -1,11 +1,14 @@
 #!/bin/bash
 
+bold=$(tput bold)
+normal=$(tput sgr0)
+
 install_aur(){
   num=$RANDOM
   echo
-  confirmation "Download the $1 tarball from aur?"
-  mkdir ~/"$1"-tmp-lorix-"$num"
-  cd ~/"$1"-tmp-lorix-"$num"
+  confirmation "Do you want to make $1?"
+  mkdir ~/"$1"-tmp-"$num"
+  cd ~/"$1"-tmp-"$num"
   wget https://aur.archlinux.org/packages/"${1:0:2}"/"$1"/"$1".tar.gz 
   if [[ -e "$1".tar.gz ]]; then
     tar -xvf "$1".tar.gz  
@@ -17,17 +20,16 @@ install_aur(){
   cd "$1"
   echo
   echo "$1 has been downloaded"
-  confirmation "Are you sure to make the package"
   makepkg
   pak=$(ls | grep .xz)
   sudo pacman -U "$pak"
   echo "Finish"
   cd
-  rm -r ~/"$1"-tmp-lorix-"$num"
+  rm -r ~/"$1"-tmp-"$num"
 }
 
 confirmation() {
-  echo -n "'$1' [Y/n]"
+  echo -n "$1 [Y/n]"
   read input
   if [[ "$input" != "Y" && "$input" != "y" && "$input" != '' ]]; then
     echo "exiting"
@@ -44,26 +46,23 @@ confirmation() {
 }
 
 check_aur() {
-  if (pacman -Q "$1"); then
-    echo "'$1' is installed"
+  if pacman -Q "$1" > /dev/null 2>&1; then
+    echo "$1 is installed"
     echo
   else
     install_aur "$1"
   fi
 }
 
-echo "* This is a simple yaourt installation script with dependency resolution"
-echo "* Before you proceed, please read the README file"
-echo 
-
+echo
 confirmation "Proceed with yaourt's installation?"
 
-echo "Resolving dependencies"
+echo -e "\n${bold}Resolving dependencies${normal}\n"
 depend=("gettext" "diffutils" "wget" "yajl")
 missing=()
 
 for i in ${depend[@]}; do
-  if (pacman -Q $i); then
+  if pacman -Q $i > /dev/null 2>&1; then
     echo "$i is installed"
     echo
   else
@@ -75,14 +74,9 @@ done
 
 if [[ -e missing ]]; then
   echo "Installing the dependencies from the official repository"
+  sudo pacman -S ${missing[@]}
 fi
 
-for i in ${missing[@]}; do
-  sudo pacman -S "$i"
-done
-
-echo "Checking if package query is installed"
 check_aur "package-query"
 
-echo "Checking if yaourt is intalled"
 check_aur "yaourt"
