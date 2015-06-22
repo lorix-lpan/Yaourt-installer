@@ -13,7 +13,7 @@ GNU GENERAL PUBLIC LICENSE Version 2
 * $ bash yaourt.sh
 
 #Command line arguments
---help or -h to display the help message
--s to skip all the confirmations
+* --help or -h to display the help message
+* -s to skip all the confirmations
 
-Credit to noisykeyboard for this feature and also many aesthetic improvments
+* Credit to noisykeyboard https://github.com/noisykeyboard for this feature and also many aesthetic improvments
