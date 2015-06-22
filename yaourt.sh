@@ -1,5 +1,10 @@
 #!/bin/bash
 
+usage(){
+    echo -e "$0: -sh\n-s: skip confirmations\n-h: show this text"
+    exit
+}
+
 bold=$(tput bold)
 normal=$(tput sgr0)
 
@@ -22,7 +27,11 @@ install_aur(){
   echo "$1 has been downloaded"
   makepkg
   pak=$(ls | grep .xz)
-  sudo pacman -U "$pak"
+  if [[ "$SKIP_CONFIRM" != "y" ]]; then
+      sudo pacman -U "$pak"
+    else
+      sudo pacman --noconfirm -U "$pak"
+  fi
   echo "Finish"
   cd
   rm -r ~/"$1"-tmp-"$num"
@@ -30,19 +39,13 @@ install_aur(){
 }
 
 confirmation() {
-  echo -n "$1 [Y/n]"
-  read input
-  if [[ "$input" != "Y" && "$input" != "y" && "$input" != '' ]]; then
-    echo "exiting"
-    # cd
-    # garbage=$(ls | grep tmp-)
-    # if [[ -e $garbage ]]; then
-    #   echo "Control-C to exit the program without deleting the tmp directory"
-    #   confirmation "Remove '$garbage'?"
-    #   rm -r "$garbage"
-    #   echo "The directory is removed"
-    # fi
-    exit 1
+  if [[ "$SKIP_CONFIRM" != "y" ]]; then
+    echo -n "$1 [Y/n]"
+    read input
+    if [[ "$input" != "Y" && "$input" != "y" && "$input" != '' ]]; then
+      echo "exiting"
+      exit 1
+    fi
   fi
 }
 
@@ -55,6 +58,14 @@ check_aur() {
     install_aur "$1"
   fi
 }
+
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    usage
+fi
+ 
+if [[ "$1" == "-s" ]]; then
+    SKIP_CONFIRM=y
+fi
 
 echo
 confirmation "Proceed with yaourt's installation?"
@@ -76,7 +87,11 @@ done
 
 if [[ -e missing ]]; then
   echo "Installing the dependencies from the official repository"
-  sudo pacman -S ${missing[@]}
+  if [[ "$SKIP_CONFIRM" != "y" ]]; then
+    sudo pacman -S ${missing[@]}
+  else
+    sudo pacman --noconfirm -S ${missing[@]}
+  fi
 fi
 
 check_aur "package-query"
