@@ -11,3 +11,9 @@ GNU GENERAL PUBLIC LICENSE Version 2
 * $ git clone http://www.github.com/lorix-lpan/yaourt-installer
 * $ cd yaourt-installer
 * $ bash yaourt.sh
+
+#Command line arguments
+--help or -h to display the help message
+-s to skip all the confirmations
+
+Credit to noisykeyboard for this feature and also many aesthetic improvments
