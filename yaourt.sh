@@ -7,7 +7,6 @@ usage(){
 
 bold=$(tput bold)
 normal=$(tput sgr0)
-
 install_aur(){
   num=$RANDOM
   echo
@@ -81,11 +80,11 @@ for i in ${depend[@]}; do
   else
     echo "$i will be installed in a moment"
     echo
-    missing+="$i"
+    missing+=("$i")
   fi
 done
 
-if [[ -e missing ]]; then
+if [[ -n "$missing" ]]; then
   echo "Installing the dependencies from the official repository"
   if [[ "$SKIP_CONFIRM" != "y" ]]; then
     sudo pacman -S ${missing[@]}
