@@ -13,7 +13,9 @@ install_aur(){
   confirmation "Do you want to make $1?"
   mkdir ~/"$1"-tmp-"$num"
   cd ~/"$1"-tmp-"$num"
-  wget https://aur.archlinux.org/packages/"${1:0:2}"/"$1"/"$1".tar.gz 
+  # old download link
+  # wget https://aur.archlinux.org/packages/"${1:0:2}"/"$1"/"$1".tar.gz 
+  wget https://aur.archlinux.org/cgit/aur.git/snapshot/"$1".tar.gz
   if [[ -e "$1".tar.gz ]]; then
     tar -xvf "$1".tar.gz  
   else
