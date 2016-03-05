@@ -7,6 +7,8 @@ usage(){
 
 bold=$(tput bold)
 normal=$(tput sgr0)
+
+# $1 => pacakge name eg. package-query
 install_aur(){
   num=$RANDOM
   echo
@@ -50,6 +52,7 @@ confirmation() {
   fi
 }
 
+# $1 => pacakge name eg. package-query
 check_aur() {
   if pacman -Q "$1" > /dev/null 2>&1; then
     echo "$1 is installed"
