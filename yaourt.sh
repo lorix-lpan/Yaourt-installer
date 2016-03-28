@@ -29,7 +29,7 @@ install_aur(){
   echo
   echo "$1 has been downloaded"
   makepkg
-  pak=$(ls | grep .xz)
+  pak=$(ls | grep pkg.tar.xz)
   if [[ "$SKIP_CONFIRM" != "y" ]]; then
       sudo pacman -U "$pak"
     else
